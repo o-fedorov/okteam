@@ -1,0 +1,8 @@
+-   repo: local
+    hooks:
+      -   id: fmt
+          name: reformat the code
+          language: system
+          pass_filenames: false
+          files: '.*\.py$'
+          entry: poetry run inv fmt

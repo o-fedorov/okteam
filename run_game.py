@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
-import pgzrun
+from pgzero.runner import run_mod
 
-from okteam.main import *
+from okteam import main
 
-if __name__ == "__main__":
-    pgzrun.go()
+run_mod(main)

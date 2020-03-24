@@ -1,4 +1,5 @@
-import pgzrun
+from .settings import BACKGROUND, HEIGHT, TITLE, WIDTH
 
-if __name__ == "__main__":
-    pgzrun.go()
+
+def draw():
+    screen.fill(BACKGROUND)

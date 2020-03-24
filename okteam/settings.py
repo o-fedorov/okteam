@@ -1,0 +1,5 @@
+WIDTH = 800
+HEIGHT = 600
+TITLE = "O.K. Team"
+
+BACKGROUND = (253, 246, 227)
