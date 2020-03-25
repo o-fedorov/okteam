@@ -5,7 +5,7 @@ See http://www.pyinvoke.org/ for details.
 from math import ceil
 from pathlib import Path
 
-from invoke import task
+from invoke import Exit, task
 
 
 @task
@@ -26,6 +26,43 @@ def crop(ctx, path, nx=1, ny=4):
             cropped_name = path.parent / f"{ path.stem }_{i}_{j}{ path.suffix }"
             print("Saving", cropped_name)
             cropped.save(cropped_name)
+
+
+@task
+def resize(ctx, path, width=None, height=None, output=None):
+    """Resize all images in a directory."""
+    from PIL import Image, UnidentifiedImageError
+
+    if width is None and height is None:
+        raise Exit("At least --with or --height is expected.")
+
+    path = Path(path)
+    output = (path / "resized") if output is None else Path(output)
+    output.mkdir(parents=True, exist_ok=True)
+
+    for image_path in path.glob("*"):
+        if image_path.is_dir():
+            continue
+
+        try:
+            image = Image.open(image_path)
+        except UnidentifiedImageError:
+            print("Skipping", image_path)
+            continue
+
+        if height is None:
+            new_height = ceil(image.height * int(width) / image.width)
+            new_width = int(width)
+        elif width is None:
+            new_width = ceil(image.width * int(height) / image.height)
+            new_height = int(height)
+        else:
+            new_height = int(height)
+            new_width = int(width)
+
+        resized_name = output / image_path.name
+        print("Saving", resized_name)
+        image.resize((new_width, new_height)).save(resized_name)
 
 
 @task
